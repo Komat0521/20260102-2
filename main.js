@@ -1,3 +1,4 @@
+// Last Updated: 2026-01-02
 import './style.css'
 
 const ROKUYO = ['先勝', '友引', '先負', '仏滅', '大安', '赤口'];
@@ -19,7 +20,7 @@ class DailyCalendar {
   constructor() {
     this.currentDate = new Date();
     this.displayDate = new Date(this.currentDate);
-    
+
     this.elements = {
       currentDay: document.getElementById('current-day'),
       prevDay: document.getElementById('prev-day'),
@@ -57,7 +58,7 @@ class DailyCalendar {
     // We need to query selectors within the container if we were cloning, 
     // but here we are updating the static elements for the "top" sheet.
     // For the animation, we will clone the top sheet.
-    
+
     const yearEl = container.querySelector('#year') || document.getElementById('year');
     const monthEl = container.querySelector('#month') || document.getElementById('month');
     const dateEl = container.querySelector('#date') || document.getElementById('date');
@@ -85,12 +86,12 @@ class DailyCalendar {
     // 1. Clone the current day element to create the "falling" sheet
     const currentSheet = this.elements.currentDay;
     const fallingSheet = currentSheet.cloneNode(true);
-    
+
     // Position the falling sheet exactly over the current one
     fallingSheet.style.position = 'absolute';
     fallingSheet.style.zIndex = '100';
     fallingSheet.classList.add('tearing');
-    
+
     // Append to container
     document.querySelector('.calendar-container').appendChild(fallingSheet);
 

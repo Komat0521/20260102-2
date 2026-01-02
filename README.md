@@ -6,6 +6,7 @@ A simple, premium-style daily calendar web application built with Vite and Vanil
 - Displays the current date, weekday, and Rokuyo.
 - "Tear off" animation to reveal the next day.
 - Daily inspirational quotes.
+- Dark Mode support.
 
 ## Getting Started
 
@@ -18,3 +19,8 @@ A simple, premium-style daily calendar web application built with Vite and Vanil
    ```bash
    npm run dev
    ```
+
+## Latest Update
+- Implemented Dark Mode.
+- Fixed GitHub Pages compatibility.
+- Verified all files are up to date.
