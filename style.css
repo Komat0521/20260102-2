@@ -1,0 +1,219 @@
+:root {
+  --paper-color: #fdfbf7;
+  --ink-color: #2c2c2c;
+  --accent-color: #c0392b; /* Traditional red for weekends/holidays */
+  --shadow-color: rgba(0, 0, 0, 0.15);
+  --font-main: 'Zen Old Mincho', serif;
+  --font-secondary: 'Shippori Mincho', serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--ink-color);
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.calendar-container {
+  position: relative;
+  width: 320px;
+  height: 500px;
+  perspective: 1000px;
+}
+
+.calendar-paper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--paper-color);
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+  box-shadow: 
+    0 1px 1px rgba(0,0,0,0.1),
+    0 2px 2px rgba(0,0,0,0.1),
+    0 4px 4px rgba(0,0,0,0.1),
+    0 8px 8px rgba(0,0,0,0.1),
+    0 16px 16px rgba(0,0,0,0.1);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform-origin: top center;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
+}
+
+/* Paper texture effect */
+.calendar-paper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tear-strip {
+  height: 40px;
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      var(--paper-color),
+      var(--paper-color) 10px,
+      #e8e6e1 10px,
+      #e8e6e1 12px
+    );
+  border-bottom: 2px dashed rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 2;
+}
+
+/* Holes for binding */
+.tear-strip::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 12px;
+  background-image: radial-gradient(circle, #333 4px, transparent 5px);
+  background-size: 40px 100%;
+  background-position: center;
+}
+
+.date-content {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+
+.header-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid var(--ink-color);
+  padding-bottom: 0.5rem;
+}
+
+.year-month {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.rokuyo {
+  font-size: 1rem;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  border: 1px solid var(--ink-color);
+  padding: 4px 2px;
+  letter-spacing: 2px;
+}
+
+.main-date {
+  font-size: 8rem;
+  font-weight: 900;
+  line-height: 1;
+  font-family: var(--font-secondary);
+}
+
+.footer-row {
+  width: 100%;
+  text-align: center;
+}
+
+.weekday {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.quote-area {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+  min-height: 3em;
+  font-style: italic;
+}
+
+/* Weekend/Holiday styling */
+.is-sunday .main-date,
+.is-sunday .weekday,
+.is-sunday .rokuyo {
+  color: var(--accent-color);
+}
+
+.is-saturday .main-date,
+.is-saturday .weekday {
+  color: #2980b9;
+}
+
+/* Animation classes */
+.tearing {
+  animation: tearOff 0.8s forwards ease-in;
+  pointer-events: none;
+}
+
+@keyframes tearOff {
+  0% {
+    transform: rotate(0deg) translateY(0);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  }
+  20% {
+    transform: rotate(-5deg) translateY(10px);
+  }
+  100% {
+    transform: rotate(15deg) translateY(800px) translateX(100px);
+    opacity: 0;
+  }
+}
+
+.controls button {
+  padding: 12px 32px;
+  font-family: var(--font-main);
+  font-size: 1.1rem;
+  background-color: var(--ink-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.controls button:hover {
+  background-color: #444;
+}
+
+.controls button:active {
+  transform: translateY(1px);
+}
