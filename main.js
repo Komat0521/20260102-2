@@ -1,5 +1,5 @@
 // Last Updated: 2026-01-02
-import './style.css'
+
 
 const ROKUYO = ['先勝', '友引', '先負', '仏滅', '大安', '赤口'];
 const WEEKDAYS = ['日', '月', '火', '水', '木', '金', '土'];
